@@ -2,7 +2,7 @@ package openSearch.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import openSearch.document.ProductDocument;
-import openSearch.service.ProductService;
+import openSearch.service.ProductSearchService;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -13,31 +13,31 @@ import java.util.List;
 @RequestMapping("/api/search")
 public class ProductSearchController {
 
-    private final ProductService productService;
+    private final ProductSearchService productSearchService;
 
     @PostMapping
     public String save(@RequestBody ProductDocument product) throws IOException {
-        return productService.save(product);
+        return productSearchService.save(product);
     }
 
     @GetMapping("/{id}")
     public ProductDocument findById(@PathVariable String id) throws IOException {
-        return productService.findById(id);
+        return productSearchService.findById(id);
     }
 
     @GetMapping
     public List<ProductDocument> findAll() throws IOException {
-        return productService.findAll();
+        return productSearchService.findAll();
     }
 
     @GetMapping("/search")
     public List<ProductDocument> search(@RequestParam String keyword) throws IOException {
-        return productService.searchByName(keyword);
+        return productSearchService.searchByName(keyword);
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable String id) throws IOException {
-        return productService.delete(id);
+        return productSearchService.delete(id);
     }
 
 }

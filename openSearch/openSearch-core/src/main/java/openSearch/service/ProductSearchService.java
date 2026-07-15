@@ -3,6 +3,7 @@ package openSearch.service;
 import lombok.RequiredArgsConstructor;
 import openSearch.document.ProductDocument;
 import org.opensearch.client.opensearch.OpenSearchClient;
+import org.opensearch.client.opensearch._types.FieldValue;
 import org.opensearch.client.opensearch.core.DeleteResponse;
 import org.opensearch.client.opensearch.core.IndexResponse;
 import org.opensearch.client.opensearch.core.SearchResponse;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+public class ProductSearchService {
 
     private static final String INDEX = "products";
 
@@ -57,7 +58,7 @@ public class ProductService {
                                 .query(q -> q
                                         .match(m -> m
                                                 .field("name")
-                                                .query(keyword)
+                                                .query(FieldValue.of(keyword))
                                         )
                                 ),
                         ProductDocument.class
