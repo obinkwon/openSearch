@@ -1,11 +1,11 @@
 package openSearch.api.controller;
 
-import openSearch.dto.ProductCreateRequestDto;
-import openSearch.service.ProductSearchService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import openSearch.document.ProductDocument;
+import openSearch.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -13,22 +13,31 @@ import java.util.List;
 @RequestMapping("/api/search")
 public class ProductSearchController {
 
-    private final ProductSearchService productSearchService;
+    private final ProductService productService;
 
-    @GetMapping("/autocomplete")
-    public List<String> autocomplete(@RequestParam String keyword) {
-        return productSearchService.autocomplete(keyword);
+    @PostMapping
+    public String save(@RequestBody ProductDocument product) throws IOException {
+        return productService.save(product);
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<Void> save(@RequestBody ProductCreateRequestDto productCreateRequestDto) {
-        productSearchService.save(productCreateRequestDto);
-        return ResponseEntity.ok().build();
+    @GetMapping("/{id}")
+    public ProductDocument findById(@PathVariable String id) throws IOException {
+        return productService.findById(id);
     }
 
-    @PostMapping("/bulk")
-    public ResponseEntity<Void> bulkSave(@RequestBody List<String> names) {
-        productSearchService.bulkSave(names);
-        return ResponseEntity.ok().build();
+    @GetMapping
+    public List<ProductDocument> findAll() throws IOException {
+        return productService.findAll();
     }
+
+    @GetMapping("/search")
+    public List<ProductDocument> search(@RequestParam String keyword) throws IOException {
+        return productService.searchByName(keyword);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable String id) throws IOException {
+        return productService.delete(id);
+    }
+
 }

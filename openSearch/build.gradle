@@ -27,9 +27,18 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
 
 	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter'
 		implementation "org.springframework.boot:spring-boot-starter-web"
-		implementation "org.opensearch.client:opensearch-java:3.0.0"
+		implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+		implementation "org.opensearch.client:opensearch-java:3.8.0"
 		implementation "org.apache.httpcomponents.client5:httpclient5:5.2.1"
+		//lombok
+		implementation 'org.projectlombok:lombok:1.18.32'
+		annotationProcessor 'org.projectlombok:lombok:1.18.32'
+		//swagger
+		implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+		//외부 jar 추가
+		implementation fileTree(dir: 'libs', include: ['*.jar'])
 	}
 }
 
