@@ -1,0 +1,5 @@
+rootProject.name = 'openSearch'
+
+include 'openSearch-api'
+include 'openSearch-core'
+include 'openSearch-web'

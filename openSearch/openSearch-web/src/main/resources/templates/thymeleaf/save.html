@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>API Test</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 30px auto;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+        }
+
+        input {
+            width: 300px;
+            padding: 5px;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>저장 API 테스트</h2>
+
+<div>
+    <input type="text" id="keyword" value="" placeholder="input keyword">
+    <button onclick="callApi()">POST 호출</button>
+    <button onclick="moveSearchPage()">저장 페이지 이동</button>
+</div>
+
+<br>
+
+<textarea id="result"></textarea>
+
+<script>
+    async function callApi() {
+        const url = '/api/search/save';
+        const keyword = document.getElementById("keyword").value;
+
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: keyword
+                })
+            });
+
+            const text = await response.text();
+
+            document.getElementById("result").value = `STATUS : ${response.status}\n\n${text}`;
+        } catch (e) {
+            document.getElementById("result").value = e;
+        }
+    }
+
+    function moveSearchPage() {
+        location.href='/';
+    }
+</script>
+
+</body>
+</html>
