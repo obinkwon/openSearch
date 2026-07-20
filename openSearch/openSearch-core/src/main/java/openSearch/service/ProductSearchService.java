@@ -18,38 +18,23 @@ import java.util.List;
 public class ProductSearchService {
 
     private static final String INDEX = "products";
-
     private final OpenSearchClient openSearchClient;
 
-    /**
-     * 저장
-     */
+    // 저장
     public String save(ProductDocument product) throws IOException {
 
-        IndexResponse response = openSearchClient.index(i -> i
-                .index(INDEX)
-                .id(product.getId())
-                .document(product)
-        );
+        IndexResponse response = openSearchClient.index(i -> i.index(INDEX).id(product.getId()).document(product));
 
         return response.id();
     }
 
-    /**
-     * ID 조회
-     */
+    // ID 조회
     public ProductDocument findById(String id) throws IOException {
 
-        return openSearchClient.get(g -> g
-                        .index(INDEX)
-                        .id(id),
-                ProductDocument.class
-        ).source();
+        return openSearchClient.get(g -> g.index(INDEX).id(id), ProductDocument.class).source();
     }
 
-    /**
-     * 이름 검색
-     */
+    // 이름 검색
     public List<ProductDocument> searchByName(String keyword) throws IOException {
 
         SearchResponse<ProductDocument> response =
@@ -64,41 +49,22 @@ public class ProductSearchService {
                         ProductDocument.class
                 );
 
-        return response.hits()
-                .hits()
-                .stream()
-                .map(Hit::source)
-                .toList();
+        return response.hits().hits().stream().map(Hit::source).toList();
     }
 
-    /**
-     * 전체 조회
-     */
+    // 전체 조회
     public List<ProductDocument> findAll() throws IOException {
 
         SearchResponse<ProductDocument> response =
-                openSearchClient.search(s -> s
-                                .index(INDEX)
-                                .query(q -> q.matchAll(ma -> ma)),
-                        ProductDocument.class
-                );
+                openSearchClient.search(s -> s.index(INDEX).query(q -> q.matchAll(ma -> ma)), ProductDocument.class);
 
-        return response.hits()
-                .hits()
-                .stream()
-                .map(Hit::source)
-                .toList();
+        return response.hits().hits().stream().map(Hit::source).toList();
     }
 
-    /**
-     * 삭제
-     */
+    // 삭제
     public String delete(String id) throws IOException {
 
-        DeleteResponse response = openSearchClient.delete(d -> d
-                .index(INDEX)
-                .id(id)
-        );
+        DeleteResponse response = openSearchClient.delete(d -> d.index(INDEX).id(id));
 
         return response.id();
     }
